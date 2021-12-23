@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+    <link rel="shortcut icon" href="../img/img.png"> </link>
+
+    <div th:replace="/fragments/header :: header"></div>
+</head>
+
+<body>
+
+<div th:replace="/fragments/header :: navbar"></div>
+
+<div class="container">
+
+    <h1 class="jumbotron">
+        Список билетов к покупке
+    </h1>
+
+    <div class="alert alert-info" th:if="${outOfStockMessage}" th:utext="${outOfStockMessage}"></div>
+
+    <div class="panel-default well" th:each="eventEntity : ${events.entrySet()}">
+        <div class="panel-heading">
+            <h1><a th:text="${eventEntity.getKey().name}" th:href="@{'/order/addTicket/' + ${eventEntity.getKey().id}}">Title</a></h1>
+            <h3 th:text="${eventEntity.getKey().description}">Description</h3>
+        </div>
+        <div class="row panel-body">
+            <div th:inline="text" class="col-md-2">Цена: [[${eventEntity.getKey().price}]] ₽</div>
+            <div th:inline="text" class="col-md-9">Количество: [[${eventEntity.getValue()}]]</div>
+            <a th:href="@{'/order/removeTicket/{id}'(id=${eventEntity.getKey().id})}" class="col-md-1">
+                <button type="button" class="btn btn-primary" th:text="Удалить">Удалить</button>
+            </a>
+        </div>
+        <br/>
+    </div>
+
+    <div class="row panel-body">
+        <h2 class="col-md-11" th:inline="text">Общая стоимость: [[${total}]] ₽</h2>
+        <a th:href="@{'/order/checkout'}" class="col-md-1">
+            <button type="button" class="btn btn-danger" th:text="Купить">Купить</button>
+        </a>
+    </div>
+
+</div>
+
+<div th:replace="/fragments/footer :: footer"></div>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+    <link rel="shortcut icon" href="../../img/img.png"> </link>
+
+</head>
+
+<body>
+
+<div th:fragment="products">
+    <div class="panel-default well" th:each="eventEntity : ${events}">
+        <div class="panel-heading">
+            <h1 th:text="${eventEntity.name}"></h1>
+        </div>
+        <h3 th:text="${eventEntity.description}" class="panel-body">Description</h3>
+        <div class="row panel-footer">
+            <div th:inline="text" class="col-md-2">Цена: [[${eventEntity.price}]] ₽</div>
+            <div th:inline="text" class="col-md-9">В продаже: [[${eventEntity.quantity}]]</div>
+            <a th:href="@{'/order/addTicket/{id}'(id=${eventEntity.id})}" class="col-md-1"
+               sec:authorize="isAuthenticated()" th:if="${eventEntity.quantity}>0">
+                <button type="button" class="btn btn-primary" th:text="Добавить">Добавить</button>
+            </a>
+        </div>
+        <br/>
+    </div>
+</div>
+
+</body>
+</html>
